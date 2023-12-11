@@ -44,8 +44,16 @@ dados[['taxa_deposito', 'taxa_limpeza']].applymap(lambda x: x.replace('$','').re
 # na conversão de um dataframe, no qual passaremos por cada elemento, é mais viável utilizarmos o método .applymap()
 
 dados[['taxa_deposito', 'taxa_limpeza']] = dados[['taxa_deposito', 'taxa_limpeza']].applymap(lambda x: x.replace('$','').replace(',','').strip())
-
 dados[['taxa_deposito','taxa_limpeza']] = dados[['taxa_deposito','taxa_limpeza']].astype(np.float64)
 
 dados.info()
+
+dados['descricao_local'] = dados['descricao_local'].str.lower()
+# os elementos de leitura estão como strings por conta do .str e o .lower() transfoma o texto com letras minúsculas
+
+dados['descricao_local'] = dados['descricao_local'].str.replace('[^ a-z A-Z 0-9\-\']', ' ', regex=True)
+# o .str junto com o .replace() são utilizados para alterar caracteres
+
+dados['descricao_local'] = dados['descricao_local'].str.replace('(?<!\w)-(?!\w)', ' ', regex=True)
+
 # %%
